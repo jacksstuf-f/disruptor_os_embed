@@ -1,0 +1,347 @@
+<html lang="en"><head><base target="_blank">
+
+
+<meta charset="UTF-8">
+<title>PUNISHER_9000_OS</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen&amp;display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg-colour: #111;
+    --text-colour: #7fff7f;
+    --accent-colour: #aaffaa;
+    --button-bg: #222;
+    --button-hover: #444;
+    --shortcut-bg: rgba(255, 255, 255, 0.1);
+  }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    background-color: var(--bg-colour);
+    color: var(--text-colour);
+    font-family: 'Silkscreen', cursive;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* --- 50% OPACITY BACKGROUND --- */
+  body::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url('https://t3.ftcdn.net/jpg/03/98/92/24/360_F_398922427_9gqlk0VVOqkvKWvEVkIyBVjNQK776DT5.jpg');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.5;
+    z-index: -2;
+  }
+
+  /* --- ENHANCED CRT SCANLINES --- */
+  body::after {
+    content: " ";
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(
+      rgba(18, 16, 16, 0) 50%, 
+      rgba(0, 0, 0, 0.15) 50%
+    );
+    background-size: 100% 4px;
+    z-index: 9999;
+    pointer-events: none;
+  }
+
+  /* --- SETTINGS CORNER (NEW) --- */
+  .settings-corner {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background: rgba(10, 10, 10, 0.85);
+    padding: 15px;
+    border: 1px solid var(--accent-colour);
+    border-radius: 6px;
+    box-shadow: 0 0 10px rgba(127, 255, 127, 0.2);
+    text-align: left;
+  }
+
+  .setting-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .setting-group label {
+    font-size: 0.8rem;
+    letter-spacing: 1px;
+    text-shadow: 0 0 5px var(--accent-colour);
+  }
+
+  .setting-group select {
+    background: var(--button-bg);
+    color: var(--accent-colour);
+    border: 1px solid var(--accent-colour);
+    font-family: 'Silkscreen', cursive;
+    padding: 5px;
+    border-radius: 3px;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .setting-group select:focus {
+    box-shadow: 0 0 10px var(--accent-colour);
+  }
+
+  .wrapper { 
+    max-width: 700px; 
+    width: 95%; 
+    z-index: 1;
+    box-sizing: border-box;
+    margin-bottom: 60px; 
+  }
+
+  h1 {
+    font-size: clamp(1.5rem, 7vw, 2.5rem); 
+    margin-bottom: 1.5rem;
+    letter-spacing: 2px;
+    color: var(--accent-colour);
+    text-shadow: 0 0 10px #7fff7f, 0 0 20px #7fff7f;
+    overflow-wrap: break-word; 
+    word-wrap: break-word;
+    max-width: 100%;
+    display: block;
+  }
+
+  button {
+    background: var(--button-bg);
+    border: 1px solid var(--accent-colour);
+    color: var(--accent-colour);
+    padding: .8rem 1.5rem;
+    font-size: 1.1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all .2s;
+    font-family: 'Silkscreen', cursive;
+    text-transform: uppercase;
+    box-shadow: 0 0 10px rgba(127, 255, 127, 0.2);
+  }
+  
+  button:hover { 
+    background: var(--button-hover); 
+    box-shadow: 0 0 15px var(--accent-colour); 
+    text-shadow: 0 0 5px var(--accent-colour);
+  }
+  button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  #answer {
+    font-size: 1.3rem;
+    margin: 2rem 0;
+    min-height: 4.5rem;
+    padding: 1rem;
+    border: 2px solid var(--accent-colour);
+    background: rgba(10, 10, 10, 0.85);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 15px rgba(127, 255, 127, 0.3) inset, 0 0 20px rgba(127, 255, 127, 0.4);
+    text-shadow: 0 0 8px var(--accent-colour);
+  }
+
+  .shortcuts-row {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-top: 2rem;
+  }
+
+  .shortcut-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .shortcut-circle {
+    width: 60px;
+    height: 60px;
+    background: var(--shortcut-bg);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--accent-colour);
+    font-size: 1.8rem;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    border: 2px solid rgba(127, 255, 127, 0.4);
+    box-shadow: 0 0 10px rgba(127, 255, 127, 0.2);
+    text-shadow: 0 0 8px var(--accent-colour);
+  }
+
+  .shortcut-circle:hover {
+    background: rgba(127, 255, 127, 0.2);
+    transform: scale(1.15);
+    border-color: var(--accent-colour);
+    box-shadow: 0 0 20px var(--accent-colour);
+  }
+
+  .shortcut-label {
+    font-size: 0.75rem;
+    letter-spacing: 1.5px;
+    opacity: 0.9;
+    text-shadow: 0 0 5px var(--accent-colour);
+  }
+
+  /* --- FOOTER STYLES --- */
+  .footer-container {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10000;
+  }
+  
+  .footer-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid var(--accent-colour);
+    box-shadow: 0 0 10px var(--accent-colour), 0 0 20px rgba(127, 255, 127, 0.4);
+    filter: brightness(1.1) contrast(1.1);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+  }
+
+  .footer-image:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px var(--accent-colour);
+  }
+</style>
+</head>
+<body data-new-gr-c-s-check-loaded="14.1287.0" data-gr-ext-installed="">
+
+<div class="settings-corner">
+  <div class="setting-group">
+    <label>TARGET:</label>
+    <select id="targetSelect">
+      <option value="general">GENERAL CLASS</option>
+      <option value="joey">RELIGION SPECIFIC</option>
+    </select>
+  </div>
+  <div class="setting-group">
+    <label>SEVERITY:</label>
+    <select id="severitySelect">
+      <option value="minor">MINOR</option>
+      <option value="major">MAJOR</option>
+    </select>
+  </div>
+</div>
+
+<div class="wrapper">
+  <h1>DISRUPTOR_PUNISHER 9000</h1>
+  
+  <button id="pickBtn">Initialize Spin</button>
+  
+  <div id="answer">AWAITING_COMMAND...</div>
+
+  <div class="shortcuts-row">
+    <div class="shortcut-container">
+      <a href="https://biblequizzes.me/wp-content/uploads/2024/04/Printable-Bible-Quiz-Jesus-Last-Days-on-Earth.pdf" target="_blank" class="shortcut-circle">✝️</a>
+      <span class="shortcut-label">BIBLE QUIZ</span>
+    </div>
+
+    <div class="shortcut-container">
+      <a href="https://filecabinet9.eschoolview.com/25A79B41-6FC4-423F-97E3-2C01A0E535C0/WorldReligionsTEST.pdf" target="_blank" class="shortcut-circle">🌍</a>
+      <span class="shortcut-label">RELIGIONS</span>
+    </div>
+  </div>
+</div>
+
+<footer class="footer-container">
+  <a href="https://www.youtube.com/@jacksstuf.f" target="_blank">
+    <img src="https://yt3.googleusercontent.com/GivfzqntzdjJOU3qWBVvneHzDrGUSgn57FpjeIlzdlfnQDamB681dDaJfIjE-qeka_nJoKJR=s160-c-k-c0x00ffffff-no-rj" alt="Profile" class="footer-image">
+  </a>
+</footer>
+
+<script>
+  // NEW DATABASE STRUCTURE: Separated by Target -> Severity
+  const punishmentDB = {
+    general: {
+      minor: [
+        "SIT INFRONT/NEXT TO TEACHER",
+        "5 MINUTES BOUNCYBALLS.ORG FOR WHOLE CLASSROOM",
+        "LAST TO LEAVE THE CLASSROOM"
+      ],
+      major: [
+        "WRITE RULES FROM JOURNAL. (LAST DITCH EFFORT)",
+        "ANSWER NEXT 5 QUESTIONS",
+        "OFFICE REFERRAL"
+      ]
+    },
+    joey: {
+      minor: [
+        "5 MINUTES BOUNCYBALLS.ORG FOR WHOLE CLASSROOM",
+        "DO AN ACTIVITY BELOW",
+        "SIT INFRONT/NEXT TO TEACHER"
+      ],
+      major: [
+        "WRITE RULES FROM JOURNAL. (LAST DITCH EFFORT)",
+        "1 PAGE ON PLATO'S ALLEGORY OF THE CAVE",
+        "EXTRA HW (ONLY IF HW IS GIVEN OUT TODAY)"
+      ]
+    }
+  };
+
+  const answerDiv = document.getElementById('answer');
+  const pickBtn   = document.getElementById('pickBtn');
+  const targetSelect = document.getElementById('targetSelect');
+  const severitySelect = document.getElementById('severitySelect');
+
+  const scrollSpeed  = 70;
+  const scrollLength = 1200;
+
+  pickBtn.addEventListener('click', () => {
+    // Get the currently selected lists
+    const currentTarget = targetSelect.value;
+    const currentSeverity = severitySelect.value;
+    const activeAnswers = punishmentDB[currentTarget][currentSeverity];
+
+    pickBtn.disabled = true;
+    answerDiv.style.boxShadow = "0 0 25px #ff4444 inset, 0 0 30px #ff4444"; 
+    answerDiv.style.borderColor = "#ff4444";
+    answerDiv.style.color = "#ff4444";
+    answerDiv.style.textShadow = "0 0 10px #ff4444";
+
+    const intervalId = setInterval(() => {
+      const idx = Math.floor(Math.random() * activeAnswers.length);
+      answerDiv.textContent = activeAnswers[idx];
+    }, scrollSpeed);
+
+    setTimeout(() => {
+      clearInterval(intervalId);
+      pickBtn.disabled = false;
+      
+      answerDiv.style.boxShadow = "0 0 15px rgba(127, 255, 127, 0.3) inset, 0 0 20px rgba(127, 255, 127, 0.4)";
+      answerDiv.style.borderColor = "var(--accent-colour)";
+      answerDiv.style.color = "var(--text-colour)";
+      answerDiv.style.textShadow = "0 0 8px var(--accent-colour)";
+    }, scrollLength);
+  });
+</script>
+
+
+</body></html>
