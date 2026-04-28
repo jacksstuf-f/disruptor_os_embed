@@ -1,0 +1,115 @@
+<html lang="en"><head><base target="_blank">
+
+
+<meta charset="UTF-8">
+<title>JOEY_PUNISHER_9000</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Silkscreen&amp;display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg-colour: #2b2b2b;
+    --text-colour: #7fff7f;
+    --accent-colour: #aaffaa;
+    --button-bg: #555;
+    --button-hover: #777;
+    --button-disabled: #333;
+  }
+
+  html, body {
+    height: 100%;
+    margin: 0;
+    /* --- BACKGROUND UPDATED HERE --- */
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                url('https://t3.ftcdn.net/jpg/03/98/92/24/360_F_398922427_9gqlk0VVOqkvKWvEVkIyBVjNQK776DT5.jpg'); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Keeps the image still while scrolling */
+    /* ------------------------------ */
+    color: var(--text-colour);
+    font-family: 'Silkscreen', cursive;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .wrapper{max-width:500px;width:90%;}
+
+  h1{
+    font-size:2.2rem;
+    margin-bottom:1rem;
+    letter-spacing:2px;
+    color:var(--accent-colour);
+  }
+
+  button{
+    background:var(--button-bg);
+    border:none;
+    color:var(--text-colour);
+    padding:.6rem 1.2rem;
+    font-size:1rem;
+    cursor:pointer;
+    border-radius:4px;
+    transition:background .2s;
+  }
+  button:hover{background:var(--button-hover);}
+  button:disabled{
+    background:var(--button-disabled);
+    cursor:not-allowed;
+  }
+
+  /* ← NEW: box styling for the answer */
+  #answer{
+    font-size:1.5rem;
+    margin-top:1.5rem;
+    min-height:2.5rem;
+    padding:0.8rem 1rem;
+    border:2px solid var(--accent-colour);
+    background:#1a1a1a;
+    border-radius:6px;
+    box-sizing:border-box;
+  }
+</style>
+</head>
+<body data-new-gr-c-s-check-loaded="14.1287.0" data-gr-ext-installed="">
+
+<div class="wrapper">
+  <h1>JOEY_PUNISHER_9000</h1>
+  <button id="pickBtn">Pick Random Answer</button>
+  <div id="answer"></div>
+</div>
+
+<script>
+  const answers = [
+    "WRITE RULES FROM JOURNAL. (LAST DITCH EFFORT)",
+    "1 PAGE ON PLATO'S ALLEGORY OF THE CAVE",
+    "5 MINUTES BOUNCYBALLS.ORG",
+    "EXTRA HW (ONLY IF HW IS GIVEN OUT TODAY)",
+    "",
+    "SIT INFRONT/NEXT TO TEACHER"
+  ];
+
+  const answerDiv = document.getElementById('answer');
+  const pickBtn   = document.getElementById('pickBtn');
+
+  const scrollSpeed  = 120;
+  const scrollLength = 1000;
+
+  pickBtn.addEventListener('click', () => {
+    pickBtn.disabled = true;
+
+    const intervalId = setInterval(() => {
+      const idx = Math.floor(Math.random() * answers.length);
+      answerDiv.textContent = answers[idx];
+    }, scrollSpeed);
+
+    setTimeout(() => {
+      clearInterval(intervalId);
+      pickBtn.disabled = false;
+    }, scrollLength);
+  });
+</script>
+
+
+</body></html>
