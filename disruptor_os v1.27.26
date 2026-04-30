@@ -548,7 +548,7 @@
   #joey-ducking {
     position: fixed;
     bottom: -500px;
-    right: -30%;
+    left: -500px;
     height: 35vh;
     max-height: 400px;
     z-index: 9000;
@@ -560,19 +560,6 @@
 
   body[data-theme="joey"] #joey-ducking {
     bottom: -10px;
-    animation: joeyWalk 20s linear infinite, joeyWaddle 1.2s ease-in-out infinite;
-  }
-
-  @keyframes joeyWalk {
-    0% { right: -30%; }
-    100% { right: 120%; }
-  }
-
-  @keyframes joeyWaddle {
-    0%, 100% { transform: rotate(-8deg) translateY(0); }
-    25% { transform: rotate(0deg) translateY(-20px); }
-    50% { transform: rotate(8deg) translateY(0); }
-    75% { transform: rotate(0deg) translateY(-20px); }
   }
 
   /* --- UNIFORM READOUT SCREENS (Deep Glass) --- */
@@ -1203,6 +1190,9 @@
   </div>
 </div>
 
+<!-- JOEY DUCKING IMAGE -->
+<img id="joey-ducking" src="https://i.imgur.com/lud8orJ.png" alt="Joey Ducking">
+
 <script>
   /* --- AUDIO ASSETS --- */
   
@@ -1448,11 +1438,12 @@
     // Update Main Title Logic
     if (selectedTheme === 'joey') {
         mainTitle.textContent = "JOEY_PUNISHER_9000";
+        startJoeyShimeji();
     } else {
         mainTitle.textContent = "DISRUPTOR_OS_9000";
+        stopJoeyShimeji();
     }
   });
-
 
   /* --- 1.5. SYSTEM GUIDE LOGIC --- */
   const guideDrawer = document.getElementById('guide-drawer');
@@ -1869,10 +1860,70 @@
     }, 100);
   });
 
-</script>
+  /* --- 6. JOEY SHIMEJI LOGIC --- */
+  const joeyImg = document.getElementById('joey-ducking');
+  let joeyX = -300;
+  let joeyTargetX = window.innerWidth / 2;
+  let joeyDirection = 1;
+  let joeySpeed = 1.5;
+  let joeyState = 'walking'; // 'idle', 'walking'
+  let joeyBob = 0;
+  let joeyAnimationId = null;
+  let joeyTimeoutId = null;
 
-<!-- JOEY DUCKING IMAGE -->
-<img id="joey-ducking" src="https://i.imgur.com/lud8orJ.png" alt="Joey Ducking">
+  function startJoeyShimeji() {
+    if (joeyAnimationId) cancelAnimationFrame(joeyAnimationId);
+    if (joeyTimeoutId) clearTimeout(joeyTimeoutId);
+    joeyX = -300; // Start offscreen left
+    joeyTargetX = window.innerWidth / 2;
+    joeyState = 'walking';
+    joeyLoop();
+  }
+
+  function stopJoeyShimeji() {
+    if (joeyAnimationId) cancelAnimationFrame(joeyAnimationId);
+    if (joeyTimeoutId) clearTimeout(joeyTimeoutId);
+    joeyImg.style.transform = `scaleX(1) translateY(0px) rotate(0deg)`;
+  }
+
+  function joeyLoop() {
+    if (document.body.getAttribute('data-theme') !== 'joey') return;
+
+    if (joeyState === 'walking') {
+      if (Math.abs(joeyTargetX - joeyX) < joeySpeed) {
+        joeyX = joeyTargetX;
+        joeyState = 'idle';
+        joeyTimeoutId = setTimeout(() => {
+          // Pick a random spot that stays within the viewport boundaries
+          const joeyWidth = joeyImg.offsetWidth || 200;
+          joeyTargetX = Math.random() * (window.innerWidth - joeyWidth);
+          joeyState = 'walking';
+        }, Math.random() * 4000 + 1000); // Idle for 1 to 5 seconds
+      } else {
+        joeyDirection = joeyTargetX > joeyX ? -1 : 1; // Flips him to face the target
+        joeyX += (joeyTargetX > joeyX ? 1 : -1) * joeySpeed;
+        joeyBob += 0.15; // Speed of the waddle bounce
+      }
+    } else {
+      joeyBob = 0; // Reset bounce when idle
+    }
+
+    // Sine waves handle the smooth physical "bounce" and "tilt" of his steps
+    const bobY = joeyState === 'walking' ? Math.abs(Math.sin(joeyBob)) * 15 : 0;
+    const rotate = joeyState === 'walking' ? Math.sin(joeyBob) * 5 : 0;
+    
+    joeyImg.style.left = `${joeyX}px`;
+    joeyImg.style.transform = `scaleX(${joeyDirection}) translateY(-${bobY}px) rotate(${rotate}deg)`;
+
+    joeyAnimationId = requestAnimationFrame(joeyLoop);
+  }
+
+  // Auto-start if the default theme ever gets set to Joey
+  if (document.body.getAttribute('data-theme') === 'joey') {
+    startJoeyShimeji();
+  }
+
+</script>
 
 </body>
 </html>
