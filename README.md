@@ -1,3 +1,4 @@
+```
 ________  .___  ___________________ ____ ________________________________ __________     ________    _________      /\      /\  ____________________ ________   
 \______ \ |   |/   _____/\______   \    |   \______   \__    ___/\_____  \\______   \    \_____  \  /   _____/     / /     / /  \______   \______   \\_____  \  
  |    |  \|   |\_____  \  |       _/    |   /|     ___/ |    |    /   |   \|       _/     /   |   \ \_____  \     / /     / /    |     ___/|       _/ /   |   \ 
@@ -13,3 +14,4 @@ ________  .___  ___________________ ____ ________________________________ ______
 
  👨🏻‍💻 DISRUPTOR_OS_9000, formally Joey Punisher 9000, is a website for teachers for disruptive students, rewarding students, splitting groups, setting timers, and a lot more teacher tools. Class specific punishments and quizzes currently include Religion, Irish, CSPE, and English.
  Tip: in the top right select the JOEY theme for original colors and a joseph bonner shimeji that backflips  
+ 
